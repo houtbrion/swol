@@ -1,37 +1,27 @@
 # swol
-wakeonlanコマンドを使って，magicパケットを送信する際に，MACアドレスをコマンドラインで入力するのが面倒なので，各ユーザ個人のホームディレクトリの設定ファイルに記載したホスト名とMACアドレスの対応表を使って，ホスト名でmagicパケットを送信する先を指定するためのラッパプログラム．
 
-# 前提
-wakeonlanコマンドが「/usr/bin」にインストールされていること．
+動作を確認した環境は以下の通り．
 
-# インストール
-/usr/local/binなどにswolをコピーし，実行権限を付与する．
-
-# 準備
-swolを利用するユーザは自分のホームディレクトリに
-「.magic_packet」というファイルを作成する．
-
-上記ファイルの中には，ホスト名とMACアドレスの対応関係を
-JSON形式で記述しておく．
-
-## ファイルの例
 ```
-{
-"host1" : "aa:bb:cc:dd:ee:ff",
-"host2" : "gg:hh:ii:jj:kk:ll"
-}
+$ go version
+go version go1.17 linux/arm
+$
 ```
 
-# 使い方
-引数として，「.magic_packet」ファイルに記載したホスト名のうちの1つを指定して起動すると
-そのホスト名に対応したMACアドレス宛に，magicパケットが送信される．
+
+## インストール
+- ```make all```
+- ```sudo make install```
+
+以下の例のように，ホスト名とMACアドレスの対応関係をJSON形式で記述しておく．
+
+### ファイルの例
+python版と違い，ホスト名とMACアドレスのフィールドにタイトル("hostname"と"mac")をつける．
 ```
-user@server:~/$ swol host1
-Sending magic packet to 255.255.255.255:9 with aa:bb:cc:dd:ee:ff
-user@server:~/$
+[
+{"hostname":"host1", "mac":"b8:27:eb:10:f3:9c"},
+{"hostname":"host2", "mac":"b8:27:eb:45:a6:c9"}
+]
 ```
 
-# 注意事項
-ネットワークインターフェイスを指定する機能はない(そもそも，wakeonlanが持っていない)ので，複数のNICが
-動作しているホストで使う場合は注意．
 
