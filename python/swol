@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+import json
+import os
+import subprocess
+import sys
+
+wakeonlan="/usr/bin/wakeonlan"
+
+def full_usage():
+    print("error : 設定ファイルが存在しません．ホームディレクトリに")
+    print("       \".magic_packet\"という名前でホストのMACアドレスをjson")
+    print("        形式で列挙したファイルを作成してください．")
+    print("")
+    print("ファイルの例: ~/.magic_packet")
+    print("{")
+    print("\"host1\" : \"b8:27:eb:10:f3:9c\",")
+    print("\"host2\" : \"b8:27:eb:45:a6:c9\"")
+    print("}")
+    exit()
+
+def usage():
+    print("usage : won 対象ホスト")
+    exit()
+
+wakeonlan="/usr/bin/wakeonlan"
+json_file_name=os.environ['HOME']+"/.magic_packet"
+
+if not len(sys.argv) == 2:
+    usage()
+
+target=sys.argv[1]
+
+if not os.path.isfile(json_file_name):
+    full_usage()
+
+json_open = open(json_file_name,'r')
+json_load = json.load(json_open)
+
+if not target in json_load:
+    usage()
+
+command = [wakeonlan , json_load[target] ]
+
+subprocess.call(command)
+
+exit()
+
