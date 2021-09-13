@@ -9,7 +9,7 @@ import (
     "encoding/json"
 )
 
-const configFileName string = ".wolhost"
+const configFileName string = ".magic_packet"
 const commandPath string = "/usr/bin/wakeonlan"
 
 func Usage() {
@@ -52,7 +52,6 @@ func loadConfig() []Config {
     // JSON形式configファイル読み込み
     texts, err := ioutil.ReadFile(configFilePath)
     if err != nil {
-        //log.Fatal(err)
 	fmt.Println("Error : can not load config file \"~/.wolhost\".")
         Usage()
 	Help()
@@ -60,14 +59,11 @@ func loadConfig() []Config {
     }
     // configデータ(JSON)デコード
     var hostLists []Config
-    //if err := json.Unmarshal(texts, &config); err != nil {
     if err := json.Unmarshal(texts, &hostLists); err != nil {
-        //log.Fatal(err)
 	fmt.Println("Error : can not parse config file.")
 	Help()
         os.Exit(1)
     }
-    //fmt.Println(texts)
     return hostLists
 }
 
